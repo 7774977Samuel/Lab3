@@ -1,0 +1,117 @@
+#include <stdio.h>
+
+// Function to swap two elements in an array
+void customSwap(int arr[], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+// Recursive helper function for shuffling odd and even elements in an array
+void customRecursiveShuffleHelper(int arr[], int begin, int stop) {
+    if (begin < stop) {
+        int pivot = arr[begin];
+        int left = begin + 1;
+        int right = stop;
+
+        // Partition the array into odd and even elements
+        while (left <= right) {
+            while (left <= right && arr[left] % 2 != 0) {
+                left++;
+            }
+            while (left <= right && arr[right] % 2 == 0) {
+                right--;
+            }
+
+            // Swap odd and even elements
+            if (left <= right) {
+                customSwap(arr, left, right);
+            }
+        }
+
+        // Place the pivot in its correct position
+        customSwap(arr, begin, right);
+
+        // Recursively shuffle the elements on both sides of the pivot
+        customRecursiveShuffleHelper(arr, begin, right - 1);
+        customRecursiveShuffleHelper(arr, right + 1, stop);
+    }
+}
+
+// Function to shuffle odd and even elements in an array using a recursive approach
+void customRecursiveShuffle(int arr[], int len) {
+    customRecursiveShuffleHelper(arr, 0, len - 1);
+}
+
+// Function to shuffle odd and even elements in an array using an iterative approach
+void customIterativeShuffle(int arr[], int len) {
+    int begin = 0;
+    int stop = len - 1;
+
+    // Iterate through the array and perform shuffling
+    while (begin < stop) {
+        int pivot = arr[begin];
+        int left = begin + 1;
+        int right = stop;
+
+        // Partition the array into odd and even elements
+        while (left <= right) {
+            while (left <= right && arr[left] % 2 != 0) {
+                left++;
+            }
+            while (left <= right && arr[right] % 2 == 0) {
+                right--;
+            }
+
+            // Swap odd and even elements
+            if (left <= right) {
+                customSwap(arr, left, right);
+            }
+        }
+
+        // Place the pivot in its correct position
+        customSwap(arr, begin, right);
+
+        // Recursively shuffle the elements on the right side of the pivot
+        customRecursiveShuffleHelper(arr + begin, 0, right - begin - 1);
+
+        // Update the starting point for the next iteration
+        begin = right + 1;
+    }
+}
+
+// Function to print the elements of an array
+void customPrintArray(int arr[], int len) {
+    for (int i = 0; i < len; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+// Main function
+int main() {
+    int array1[] = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
+    int length1 = sizeof(array1) / sizeof(array1[0]);
+
+    printf("Original Array: ");
+    customPrintArray(array1, length1);
+
+    // Using Recursive Approach
+    customRecursiveShuffle(array1, length1);
+    printf("After Recursive Shuffle: ");
+    customPrintArray(array1, length1);
+
+    // Reset the array
+    int array2[] = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
+    int length2 = sizeof(array2) / sizeof(array2[0]);
+
+    printf("Original Array: ");
+    customPrintArray(array2, length2);
+
+    // Using Iterative Approach
+    customIterativeShuffle(array2, length2);
+    printf("After Iterative Shuffle: ");
+    customPrintArray(array2, length2);
+
+    return 0;
+}
