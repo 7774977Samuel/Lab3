@@ -1,0 +1,49 @@
+#include <stdio.h>
+#define INITIALBALANCE 1000
+#define MAXTRANSACTIONS 100
+
+int main() {
+    int transactions[] = {200, -150, -500, -400, -50, -200, 300};
+    int n = sizeof(transactions) / sizeof(transactions[0]);
+    int tobeprocessed[MAXTRANSACTIONS];
+    int tobeprocessed_count = 0;
+
+    int balance = INITIALBALANCE;
+    printf("Starting balance is %d dhs\n", balance);
+
+    // Process transactions
+    for (int i = 0; i < n; i++) {
+        int transaction = transactions[i];
+        if (transaction < 0 && -transaction > balance) {
+            printf("Transaction %d  of %d dhs is invalid\n", i + 1, -transaction);
+            tobeprocessed[tobeprocessed_count++] = transaction;
+            continue;
+        }
+        // Update balance for valid transactions
+        balance += transaction;
+        printf("Transaction %d %s of %d dhs processed. New balance is %d dhs.\n",
+               i + 1,
+               transaction > 0 ? "deposit" : "withdrawal",
+               transaction > 0 ? transaction : -transaction,
+               balance);
+        if (balance == 0) {
+            printf("Balance reached 0 after transaction %d \n", i + 1);
+            for (int j = i + 1; j < n; j++) {
+                tobeprocessed[tobeprocessed_count++] = transactions[j];
+            }
+            break;
+        }
+    }
+
+    printf("\nFinal balance is %d dhs\n", balance);
+    printf("Unprocessed transactions: ");
+    if (tobeprocessed_count == 0) {
+        printf("None\n");
+    } else {
+        for (int i = 0; i < tobeprocessed_count; i++) {
+            printf("%d ", tobeprocessed[i]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
