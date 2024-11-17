@@ -26,9 +26,6 @@ typedef struct {
     int active_size;
 } team_t;
 
-// Global variables
-team_t teams[TEAMS];
-int team_count = 0; // Counter for total teams
 
 // Function prototypes
 void display_menu();
@@ -37,6 +34,10 @@ void search_update();
 void add_player();
 void display_clubs();
 void handle_error(const char *message);
+// Global variables
+team_t teams[TEAMS];
+int team_count = 0; // Counter for total teams
+
 
 // Main function
 int main() {
@@ -70,6 +71,11 @@ int main() {
         }
     }
     return 0;
+}
+
+// Function to handle errors
+void handle_error(const char *message) {
+    printf("Error: %s\n", message);
 }
 
 // Function to display the menu
@@ -239,7 +245,4 @@ void search_update() {
     }
     printf("Player not found.\n");
 }
-// Function to handle errors
-void handle_error(const char *message) {
-    printf("Error: %s\n", message);
-}
+
